@@ -1,38 +1,62 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Header from '@/src/componets/Header';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import Button from '@/src/componets/Button';
+
 
 const Info = () => {
-  // Dummy data for FlatList
-  const facts = [
-    { id: '1', fact: 'The Eiffel Tower can be 15 cm taller during the summer.' },
-    { id: '2', fact: 'Bananas are berries, but strawberries are not.' },
-    { id: '3', fact: 'Octopuses have three hearts.' },
-    { id: '4', fact: 'The Eiffel Tower can be 15 cm taller during the summer.' },
-    { id: '5', fact: 'Bananas are berries, but strawberries are not.' },
-    { id: '6', fact: 'Octopuses have three hearts.' },
-    { id: '7', fact: 'The Eiffel Tower can be 15 cm taller during the summer.' },
-    { id: '8', fact: 'Bananas are berries, but strawberries are not.' },
-    { id: '9', fact: 'Octopuses have three hearts.' },
-    { id: '10', fact: 'The Eiffel Tower can be 15 cm taller during the summer.' },
-    { id: '11', fact: 'Bananas are berries, but strawberries are not.' },
-    { id: '12', fact: 'Octopuses have three hearts.' },
-  ];
+  const [facts, setFacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const fetchFacts = async () => {
+    setLoading(true);
+    setButtonLoading(true); // Show loading effect on button
+    try {
+      let newFacts = [];
+      for (let i = 0; i < 6; i++) {
+        const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+        const data = await response.json();
+        newFacts.push({ id: Date.now().toString() + i, fact: data.text });
+      }
+      setFacts(newFacts);
+    } catch (error) {
+      console.error('Error fetching facts:', error);
+    } finally {
+      setLoading(false);
+      setButtonLoading(false); // Hide button loading effect
+    }
+  };
+
+  useEffect(() => {
+    fetchFacts();
+  }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Info Page" />
-      <View style={styles.MainConatiner}>
-        <FlatList
-          data={facts}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-              <Text style={styles.text}>{item.fact}</Text>
-            </View>
-          )}
-        />
+      <View style={styles.MainContainer}>
+        {loading ? (
+          <ActivityIndicator size="large" color="#007AFF" />
+        ) : (
+          <FlatList
+            data={facts}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <Text style={styles.text}>{item.fact}</Text>
+              </View>
+            )}
+          />
+        )}
       </View>
+      <Button
+        title={buttonLoading ? 'Loading...' : 'Show Another'}
+        containerStyle={{ marginHorizontal: 15, opacity: buttonLoading ? 0.7 : 1 }}
+        onPress={fetchFacts}
+        disabled ={buttonLoading} // Disable button while fetching new facts
+      />
     </View>
   );
 };
@@ -42,11 +66,13 @@ export default Info;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: '#fff',
+    paddingBottom: 15,
   },
-  MainConatiner:{
-    padding:20,
+  MainContainer: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   item: {
     backgroundColor: '#f9c2ff',

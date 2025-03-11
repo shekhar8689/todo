@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '@/src/componets/Header';
+import Button from '@/src/componets/Button';
 
 
 // Store local images inside `assets` folder and import them
@@ -66,9 +67,7 @@ const About = () => {
                     />
 
                     {/* Show Another Button */}
-                    <TouchableOpacity style={styles.ButtonContainer} onPress={getRandomMessageAndImage}>
-                        <Text style={styles.ButtonText}>Show Another</Text>
-                    </TouchableOpacity>
+                    <Button title='Show anthor' onPress={getRandomMessageAndImage} />
                 </View>
             </View>
         </View>
@@ -113,17 +112,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    ButtonContainer: {
-        marginTop: 10,
-        padding: 10,
-        borderRadius: 80,
-        backgroundColor: "#007AFF",
-        alignItems: "center"
-    },
-    ButtonText: {
-        padding: 5,
-        color: "white",
-        fontSize: 20,
-        fontWeight: "500"
-    }
 });

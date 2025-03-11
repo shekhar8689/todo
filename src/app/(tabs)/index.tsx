@@ -7,6 +7,7 @@ import ActionButton from '../../componets/ActionButton'
 import AddTodo from '../../componets/AddTodo'
 
 export interface TodoData {
+  id: string; 
   title: string;
   isCompleted: boolean;
   time: string;
@@ -56,6 +57,7 @@ const index = () => {
     let formattedTime = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }); // 10:30 AM
 
     let finaldata = {
+      id: Date.now().toString(),
       title: todo,
       isCompleted: false,
       time: `${formattedDate}, ${formattedTime}`,
@@ -65,8 +67,8 @@ const index = () => {
     setTodo("");
     setOpen(false);
   }
-  const deleteTodo = (indexToDelete: number) => {
-    setData(data.filter((_, index) => index !== indexToDelete));
+  const deleteTodo = (idToDelete: string) => {
+    setData(data.filter((todo) => todo.id !== idToDelete));
   };
 
   return (
@@ -74,7 +76,7 @@ const index = () => {
       <Header title="My Todo"  />
       <View style={styles.TodoContainer}>
         <FlatList data={data}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ gap: 10 }}
           ListEmptyComponent={() => <Text style={styles.NoDataFound}>No Data Found</Text>}
@@ -83,7 +85,7 @@ const index = () => {
               title={item.title}
               time={item.time}
               isCompleted={item.isCompleted}
-              onPressDelete={() => deleteTodo(index)} />
+              onPressDelete={() => deleteTodo(item.id)} />
           }} />
 
       </View>

@@ -5,15 +5,18 @@ import 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function RootLayout(
+
+) {
 
   useEffect(() => {
-      SplashScreen.hideAsync();
+    SplashScreen.hideAsync();
   }, []);
 
   return (
-      <Stack screenOptions={{headerShown:false}}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack> 
+    <Stack screenOptions={{headerShown:false}}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack> 
   );
+
 }

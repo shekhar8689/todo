@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shekhargawai321.todo"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7e39f369-a255-4bde-8ac5-c23abc5e2681"
+      }
     }
   }
 }
