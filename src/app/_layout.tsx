@@ -10,7 +10,7 @@ export default function RootLayout(
 ) {
 
   useEffect(() => {
-    
+    SplashScreen.hideAsync();
   }, []);
 
   return (
